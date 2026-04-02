@@ -17,6 +17,7 @@ let pacmanLeftImage;
 let pacmanRightImage;
 let wallImage;
 let gameStarted = false;
+let blink = true;
 
 //X = wall, O = skip, P = pac man, ' ' = food
 //Ghosts: b = blue, o = orange, p = pink, r = red
@@ -80,7 +81,24 @@ window.onload = function() {
     // console.log(walls.size)
     // console.log(foods.size)
     // console.log(ghosts.size)
-   
+  
+    function drawStartScreen(){
+        context.clearRect(0,0, board.width, board.height);
+        context.fillStyle = "yellow";
+        context.font = "32px sans-serif";
+        context.fillText("PAC-MAN", boardWidth / 2-80, boardHeight/2 - 40);
+
+        //blinking "press space"
+        if(blink){
+        context.fillStyle = "white";
+        context.font = "20px sans-serif";
+        context.fillText("Press SPACE to Start", boardWidth/2 - 110, boardHeight/2 + 10);
+        }   
+    }
+    setInterval(() =>{
+        blink = !blink;
+    }, 500);
+    
 function loadImages(callback) {
     let imagesToLoad = 9;
 
