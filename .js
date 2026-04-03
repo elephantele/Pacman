@@ -341,40 +341,42 @@ function draw() {
 
 function move() {
   // buffered turning: try nextDirection first
-  if (nextDirection) {
+ // buffered turning: try nextDirection first
+if (nextDirection) {
     let oldX = pacman.x;
     let oldY = pacman.y;
     let oldDir = pacman.direction;
     let oldVX = pacman.velocityX;
     let oldVY = pacman.velocityY;
 
+    // change direction WITHOUT moving
     pacman.direction = nextDirection;
     pacman.updateVelocity();
 
-    //test movement
+    // test movement
     pacman.x += pacman.velocityX;
     pacman.y += pacman.velocityY;
 
     let blocked = false;
     for (let wall of walls.values()) {
-      if (collision(pacman, wall)) {
-        blocked = true;
-        break;
-      }
+        if (collision(pacman, wall)) {
+            blocked = true;
+            break;
+        }
     }
 
     if (blocked) {
-      // revert
-      pacman.x = oldX;
-      pacman.y = oldY;
-      pacman.direction = oldDir;
-      pacman.velocityX = oldVX;
-      pacman.velocityY = oldVY;
+        // revert
+        pacman.x = oldX;
+        pacman.y = oldY;
+        pacman.direction = oldDir;
+        pacman.velocityX = oldVX;
+        pacman.velocityY = oldVY;
     } else {
-      // successful turn, clear buffer
-      nextDirection = null;
+        // successful turn
+        nextDirection = null;
     }
-  }
+}
 
   // normal movement
   pacman.x += pacman.velocityX;
@@ -452,7 +454,6 @@ function move() {
           gameOver = true;
           return;
         }
-        paused = true;
         resetPositions();
         return;
       }
@@ -494,7 +495,9 @@ function move() {
       break;
     }
   }
-  foods.delete(foodEaten);
+if(foodEaten){
+    foods.delete(foodEaten);
+}
 
   // power pellet collision
   let pelletEaten = null;
@@ -633,7 +636,11 @@ class Block {
   }
 
   reset() {
-    this.x = this.startX;
-    this.y = this.startY;
-  }
+  this.x = this.startX;
+  this.y = this.startY;
+  this.direction = "R";
+  this.updateVelocity();
+  this.frightened = false;
+  this.image = this.originalImage;
+}
 }
