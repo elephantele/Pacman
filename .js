@@ -100,25 +100,14 @@ window.onload = function () {
 
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space") {
-    // start game
     if (!gameStarted) {
       gameStarted = true;
       document.addEventListener("keydown", movePacman);
       update();
-      return;
     }
-
-    // resume game
-    if (paused) {
-      paused = false;
-      update();
-      return;
-    }
-
-    // pause game
-    paused = true;
   }
 });
+
 
 function startScreenLoop() {
   if (gameStarted) {
@@ -359,7 +348,12 @@ function move() {
     let oldVX = pacman.velocityX;
     let oldVY = pacman.velocityY;
 
-    pacman.updateDirection(nextDirection); // this moves pacman once
+    pacman.direction = nextDirection;
+    pacman.updateVelocity();
+
+    //test movement
+    pacman.x += pacman.velocityX;
+    pacman.y += pacman.velocityY;
 
     let blocked = false;
     for (let wall of walls.values()) {
